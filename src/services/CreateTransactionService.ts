@@ -20,7 +20,6 @@ class CreateTransactionService {
   }: Request): Promise<Transaction | string> {
     const categoryRepository = getRepository(Category);
     const transactionRepository = getCustomRepository(TransactionRepository);
-    const categoryLowed = category.toLowerCase();
 
     const totalIncome = await transactionRepository.getBalance();
 
@@ -30,7 +29,7 @@ class CreateTransactionService {
 
     const categoryExists = await categoryRepository.findOne({
       where: {
-        title: categoryLowed,
+        title: category,
       },
     });
 
@@ -48,7 +47,7 @@ class CreateTransactionService {
     }
 
     const newCategory = categoryRepository.create({
-      title: categoryLowed,
+      title: category,
     });
 
     await categoryRepository.save(newCategory);
