@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { Router } from 'express';
 import TransactionsRepository from '../repositories/TransactionsRepository';
 import CreateTransactionService from '../services/CreateTransactionService';
@@ -10,8 +11,13 @@ transactionsRouter.get('/', async (request, response) => {
   const transactionsRepository = new TransactionsRepository();
   const transactions = await transactionsRepository.getAll();
 
+  transactions.map(transaction => delete transaction.category_id);
+
+  const balance = await transactionsRepository.getBalance();
+
   return response.status(200).json({
     transactions,
+    balance,
   });
 });
 

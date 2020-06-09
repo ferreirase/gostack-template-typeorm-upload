@@ -56,7 +56,7 @@ export default class CreateTransactions1591724926680
     await queryRunner.createForeignKey(
       'transactions',
       new TableForeignKey({
-        name: 'CategoryTransaction',
+        name: 'category',
         columnNames: ['category_id'],
         referencedColumnNames: ['id'], // campo na outra tabela que referencia esse campo
         referencedTableName: 'categories', // tabela do relacionamento
@@ -67,6 +67,7 @@ export default class CreateTransactions1591724926680
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropForeignKey('transactions', 'category');
     await queryRunner.dropTable('transactions');
   }
 }
