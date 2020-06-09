@@ -24,17 +24,27 @@ class TransactionsRepository extends Repository<Transaction> {
     const transactionsRepository = getRepository(Transaction);
     const transactions = await transactionsRepository.find();
 
-    const totalTransactionsIncome = transactions
-      .filter(transaction => transaction.type === 'income')
-      .map(current => current.value)
-      // eslint-disable-next-line no-param-reassign
-      .reduce((accumulator, currentValue) => (accumulator += currentValue));
+    const totalTransactionsIncome =
+      transactions.filter(trans => trans.type === 'income').length === 0
+        ? 0
+        : transactions
+            .filter(trans => trans.type === 'income')
+            .map(tr => tr.value)
+            .reduce(
+              // eslint-disable-next-line no-param-reassign
+              (accumulator, currentValue) => (accumulator += currentValue),
+            );
 
-    const totalTransactionsOutcome = transactions
-      .filter(transaction => transaction.type === 'outcome')
-      .map(current => current.value)
-      // eslint-disable-next-line no-param-reassign
-      .reduce((accumulator, currentValue) => (accumulator += currentValue));
+    const totalTransactionsOutcome =
+      transactions.filter(trans => trans.type === 'outcome').length === 0
+        ? 0
+        : transactions
+            .filter(trans => trans.type === 'outcome')
+            .map(tr => tr.value)
+            .reduce(
+              // eslint-disable-next-line no-param-reassign
+              (accumulator, currentValue) => (accumulator += currentValue),
+            );
 
     const balance = {
       income: totalTransactionsIncome,
