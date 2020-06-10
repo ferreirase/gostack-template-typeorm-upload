@@ -3,7 +3,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import TransactionsRepository from '../repositories/TransactionsRepository';
 import CreateTransactionService from '../services/CreateTransactionService';
-// import DeleteTransactionService from '../services/DeleteTransactionService';
+import DeleteTransactionService from '../services/DeleteTransactionService';
 import ImportTransactionsService from '../services/ImportTransactionsService';
 import uploadConfig from '../config/upload';
 
@@ -37,10 +37,13 @@ transactionsRouter.post('/', async (request, response) => {
   return response.status(201).json(newTransaction);
 });
 
-/*
 transactionsRouter.delete('/:id', async (request, response) => {
-  // TODO
-}); */
+  const { id } = request.params;
+  const deleteTransactionService = new DeleteTransactionService();
+  await deleteTransactionService.execute({ transactionId: id });
+
+  return response.status(204).json();
+});
 
 transactionsRouter.post(
   '/import',
